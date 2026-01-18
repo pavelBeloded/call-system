@@ -4,6 +4,23 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import "./index.css";
 
+
+async function enableMocking() {
+  const isMockingEnabled = import.meta.env.DEV || import.meta.env.VITE_ENABLE_MOCKS === 'true';
+
+  if (!isMockingEnabled) {
+    return;
+  }
+
+  const { worker } = await import('./mocks/browser')
+
+  return worker.start({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+      url: '/mockServiceWorker.js',
+    },
+  });
+}
 const router = createRouter({ routeTree });
 
 declare module "@tanstack/react-router" {
@@ -11,13 +28,14 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
-
-const rootElement = document.getElementById("root")!;
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>,
-  );
-}
+enableMocking().then(() => {
+  const rootElement = document.getElementById("root")!;
+  if (!rootElement.innerHTML) {
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>,
+    );
+  }
+})
