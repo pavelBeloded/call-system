@@ -23,7 +23,16 @@ async function enableMocking() {
   });
 }
 
-const queryCient = new QueryClient();
+const queryCient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, 
+      
+      refetchOnWindowFocus: false, 
+      
+    },
+  },
+});
 
 const router = createRouter({ routeTree });
 
