@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CommunicationPage } from "@/pages/communicaton";
+import { CommunicationPage } from "@/pages";
 
 
 export const Route = createFileRoute('/')({

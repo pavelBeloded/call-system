@@ -9,7 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './app/routes/__root'
-import { Route as IndexRouteImport } from './app/routes/index'
+import { Route as IndexRouteImport } from './app/routes'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
