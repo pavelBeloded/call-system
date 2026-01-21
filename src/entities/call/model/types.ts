@@ -1,10 +1,21 @@
+export type CallType = "incoming" | "outgoing" | "missed"
+
+export type AccountStatus =
+  | "client"
+  | "lead"
+  | "prospect"
+  | "no_account"
+
 export interface Call {
-    id: string
-    contactName: string,
-    phoneNumber: string,
-    time: string,
-    status: string,
-    duration: number,
-    recording: boolean,
-    type: 'incoming' | 'outgoing';
+  id: string
+  phoneNumber: string 
+  contactName?: string
+
+  time: string
+  duration?: number
+
+  accountStatus?: AccountStatus
+  recording: boolean
+
+  type: CallType
 }

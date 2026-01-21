@@ -1,4 +1,4 @@
-import { ChartColumnBig, Presentation, PhoneCall } from "lucide-react"
+import { ChartColumnBig, Presentation, PhoneCall } from "lucide-react";
 
 import {
   Sidebar,
@@ -8,7 +8,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 const items = [
   {
@@ -26,7 +26,7 @@ const items = [
     url: "/task-managment",
     icon: Presentation,
   },
-]
+];
 
 export function AppSidebar() {
   return (
@@ -50,5 +50,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }

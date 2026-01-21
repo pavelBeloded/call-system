@@ -5,20 +5,20 @@ import { routeTree } from "./routeTree.gen";
 import "./app/styles/index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-
 async function enableMocking() {
-  const isMockingEnabled = import.meta.env.DEV || import.meta.env.VITE_ENABLE_MOCKS === 'true';
+  const isMockingEnabled =
+    import.meta.env.DEV || import.meta.env.VITE_ENABLE_MOCKS === "true";
 
   if (!isMockingEnabled) {
     return;
   }
 
-  const { worker } = await import('./mocks/browser')
+  const { worker } = await import("./mocks/browser");
 
   return worker.start({
-    onUnhandledRequest: 'bypass',
+    onUnhandledRequest: "bypass",
     serviceWorker: {
-      url: '/mockServiceWorker.js',
+      url: "/mockServiceWorker.js",
     },
   });
 }
@@ -44,4 +44,4 @@ enableMocking().then(() => {
       </React.StrictMode>,
     );
   }
-})
+});
