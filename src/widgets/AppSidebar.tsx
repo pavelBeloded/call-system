@@ -13,7 +13,7 @@ import {
 const items = [
   {
     title: "Communication",
-    url: "/",
+    url: "/communication",
     icon: PhoneCall,
   },
   {
@@ -30,7 +30,7 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar variant="sidebar" collapsible="icon">
+    <Sidebar variant="floating" collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
