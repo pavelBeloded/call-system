@@ -1,4 +1,5 @@
 import { CallHistory } from "@/widgets/callHistory/CallHistory";
+import { ContactDetail } from "@/widgets/contactDetail/ContactDetail";
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 
 export function CommunicationPage() {
@@ -25,7 +26,7 @@ export function CommunicationPage() {
           <CallHistory />
         </div>
         <div className="lg:col-span-5">
-          {/* <ContactDetail /> */}
+          <ContactDetail />
         </div>
       </div>
     </div>

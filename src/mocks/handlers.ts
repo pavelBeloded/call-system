@@ -10,7 +10,7 @@ export type AccountStatus =
 
 export interface Call {
   id: string
-  phoneNumber: string 
+  phoneNumber: string
   contactName?: string
 
   time: string
@@ -73,8 +73,20 @@ const calls: Call[] = [
 ];
 
 export const handlers = [
-    http.get("api/calls", () => {
-        console.log("New call request");
-        return HttpResponse.json<Call[]>(calls)
-    })
+  http.get("api/calls", () => {
+    console.log("New call request");
+    return HttpResponse.json<Call[]>(calls)
+  }),
+
+  http.get('/api/calls/:id', ({ params }) => {
+    const { id } = params;
+
+    const call = calls.find(c => c.id === id);
+
+    if (!call) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    return HttpResponse.json(call);
+  }),
 ]
