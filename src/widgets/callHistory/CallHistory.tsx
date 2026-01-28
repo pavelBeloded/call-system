@@ -97,8 +97,8 @@ export function CallHistory() {
             key={option.value}
             variant={activeFilter === option.value ? "default" : "outline"}
             className={`cursor-pointer px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${activeFilter === option.value
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
               }`}
             onClick={() => setActiveFilter(option.value)}
           >

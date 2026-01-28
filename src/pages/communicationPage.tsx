@@ -1,59 +1,52 @@
 import { CallHistory } from "@/widgets/callHistory/CallHistory";
 import { ContactDetail } from "@/widgets/contactDetail/ContactDetail";
 import { ActiveCallBanner } from "@/widgets/ActiveCallBanner";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 
 export function CommunicationPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50 w-full flex flex-col min-h-full">
       <ActiveCallBanner />
 
-      <div className="max-w-screen-2xl mx-auto px-6 py-8 space-y-6">
-        <h1 className="text-3xl font-bold text-gray-900">Communication</h1>
+      <div className="w-full px-6 py-8 space-y-6">
+        <h1 className="text-3xl font-bold text-[#1a1c1e]">Communication</h1>
 
         <Tabs defaultValue="call" className="w-full">
-          <TabsList className="bg-transparent border-b rounded-none w-full justify-start h-auto p-0 space-x-8">
-            <TabsTrigger
-              value="call"
-              className="data-[state=active]:border-blue-600 data-[state=active]:bg-transparent data-[state=active]:text-blue-600 border-b-2 border-transparent rounded-none pb-3 px-0 font-medium"
-            >
+          <TabsList variant="line">
+            <TabsTrigger value="call">
               <span className="flex items-center gap-2">
                 Call
-                <Badge className="bg-blue-600 text-white rounded-full h-5 min-w-5 px-1.5">
-                  1
-                </Badge>
               </span>
             </TabsTrigger>
-            <TabsTrigger
-              value="chat"
-              className="pb-3 px-0 font-medium text-gray-600"
-            >
-              Chat
-            </TabsTrigger>
-            <TabsTrigger
-              value="email"
-              className="pb-3 px-0 font-medium text-gray-600"
-            >
-              Email
-            </TabsTrigger>
-            <TabsTrigger
-              value="stats"
-              className="pb-3 px-0 font-medium text-gray-600"
-            >
-              Statistics
-            </TabsTrigger>
+            <TabsTrigger value="chat">Chat</TabsTrigger>
+            <TabsTrigger value="email">Email</TabsTrigger>
+            <TabsTrigger value="stats">Statistics</TabsTrigger>
           </TabsList>
-        </Tabs>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-7">
-            <CallHistory />
-          </div>
-          <div className="lg:col-span-5 bg-white rounded-lg shadow-sm">
-            <ContactDetail />
-          </div>
-        </div>
+          <TabsContent value="call" className="mt-6 border-none p-0 outline-none">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div className="lg:col-span-7 bg-white rounded-lg shadow-sm border border-slate-200 min-h-125 px-4 py-4 ">
+                <CallHistory />
+              </div>
+              <div className="lg:col-span-5 bg-white rounded-lg shadow-sm border border-slate-200 min-h-125">
+                <ContactDetail />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="chat" className="mt-10 text-center text-slate-400">
+            Chat module will be here
+          </TabsContent>
+
+          <TabsContent value="email" className="mt-10 text-center text-slate-400">
+            Email module placeholder
+          </TabsContent>
+
+          <TabsContent value="stats" className="mt-10 text-center text-slate-400">
+            Internal statistics placeholder
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
