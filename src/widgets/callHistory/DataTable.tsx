@@ -57,42 +57,6 @@ export function DataTable<TData extends { id: string; type: string; accountStatu
 
   return (
     <div className="w-full">
-      {/* SEARCH */}
-      <div className="flex items-center gap-4 py-4">
-        <Input
-          placeholder="Search by phone..."
-          value={(table.getColumn("phoneNumber")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("phoneNumber")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm bg-white"
-        />
-      </div>
-
-      {/* FILTERS */}
-      <div className="flex flex-wrap gap-2 pb-4">
-        <Button 
-          size="sm" 
-          variant="outline" 
-          onClick={() => {
-            table.resetColumnFilters()
-          }}
-        >
-          All
-        </Button>
-        <Button size="sm" variant="outline" onClick={() => table.getColumn("type")?.setFilterValue("missed")}>
-          Missed
-        </Button>
-        <Button size="sm" variant="outline" onClick={() => table.getColumn("accountStatus")?.setFilterValue("prospect")}>
-          Prospect
-        </Button>
-        <Button size="sm" variant="outline" onClick={() => table.getColumn("accountStatus")?.setFilterValue("lead")}>
-          Lead
-        </Button>
-        <Button size="sm" variant="outline" onClick={() => table.getColumn("accountStatus")?.setFilterValue("client")}>
-          Client
-        </Button>
-      </div>
 
       {/* TABLE */}
       <div className="overflow-hidden rounded-xl border bg-white shadow-sm">

@@ -1,13 +1,17 @@
-import { useCall } from "@/entities/call/api/useCall";
+import { useCall } from "@/entities/call";
 import { useSearch } from "@tanstack/react-router";
 import { Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+
+type TabType = "details" | "interactions" | "billing" | "service";
 
 export function ContactDetail() {
   const search = useSearch({ from: '/communication' });
   const { data: call, isLoading, error } = useCall(search.callId);
+  const [activeTab, setActiveTab] = useState<TabType>("details");
 
-  // Состояние, когда звонок не выбран
+  // When no call is selected
   if (!search.callId) {
     return (
       <div className="flex h-full items-center justify-center text-slate-400 italic">
@@ -35,88 +39,123 @@ export function ContactDetail() {
     );
   }
 
+  const tabs: { id: TabType; label: string }[] = [
+    { id: "details", label: "Details" },
+    { id: "interactions", label: "Interactions" },
+    { id: "billing", label: "Billing history" },
+    { id: "service", label: "Service plans" },
+  ];
+
   return (
-    <div className="bg-white h-full px-2 py-1">
-      <div className="flex justify-between items-start mb-6">
-        <h2 className="text-[22px] font-bold text-[#1a1c1e] tracking-tight">
+    <div className="bg-white h-full px-4 py-4 space-y-6">
+      {/* Header with name and action buttons */}
+      <div className="flex justify-between items-start">
+        <h2 className="text-2xl font-bold text-gray-900">
           {call.contactName || "Unknown"}
         </h2>
-        <div className="flex gap-3">
-          <button className="p-1.5 border border-blue-500 rounded-full text-blue-500 hover:bg-blue-50 transition-colors">
+        <div className="flex gap-2">
+          <button className="p-2 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition-colors">
             <Phone size={18} />
           </button>
-          <button className="p-1.5 border border-blue-500 rounded-full text-blue-500 hover:bg-blue-50 transition-colors">
+          <button className="p-2 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition-colors">
             <Mail size={18} />
           </button>
         </div>
       </div>
 
-      <div className="flex gap-8 border-b border-slate-100 mb-8">
-        <button className="pb-3 text-sm font-bold text-blue-600 border-b-2 border-blue-600">
-          Details
-        </button>
-        <button className="pb-3 text-sm font-medium text-slate-500 hover:text-slate-800">
-          Interactions
-        </button>
-        <button className="pb-3 text-sm font-medium text-slate-500 hover:text-slate-800">
-          Billing history
-        </button>
-        <button className="pb-3 text-sm font-medium text-slate-500 hover:text-slate-800">
-          Service plans
-        </button>
+      {/* Tabs */}
+      <div className="flex gap-6 border-b border-gray-200">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "pb-3 text-sm font-medium transition-colors relative",
+              activeTab === tab.id
+                ? "text-blue-600 font-bold"
+                : "text-gray-600 hover:text-gray-900"
+            )}
+          >
+            {tab.label}
+            {activeTab === tab.id && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />
+            )}
+          </button>
+        ))}
       </div>
 
-      <div>
-        <h3 className="text-[19px] font-bold text-[#1a1c1e] mb-6">
-          Personal Information
-        </h3>
+      {/* Content */}
+      {activeTab === "details" && (
+        <div className="space-y-6">
+          <h3 className="text-lg font-bold text-gray-900">
+            Personal Information
+          </h3>
 
-        <div className="grid grid-cols-2 gap-y-8 gap-x-12">
-          <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-x-12 gap-y-6">
             <InfoBlock 
-                label="First Name:" 
-                value={call.contactName?.split(' ')[0] || "-"} 
+              label="First Name:" 
+              value={call.firstName || call.contactName?.split(' ')[0] || "-"} 
             />
             <InfoBlock 
-                label="Last Name:" 
-                value={call.contactName?.split(' ')[1] || call.contactName || "-"} 
-            />
-          </div>
-
-          <div className="space-y-6">
-            <InfoBlock 
-                label="Phone Number:" 
-                value={call.phoneNumber || "unknown"} 
+              label="Phone Number:" 
+              value={call.phoneNumber || "Unknown"} 
             />
             <InfoBlock 
-                label="Account Status:" 
-                value={call.accountStatus || "-"}
-                valueClassName="text-slate-800"
+              label="Middle Name:" 
+              value={call.middleName || "-"} 
             />
-            
+            <InfoBlock 
+              label="Mobility Status:" 
+              value={call.mobilityStatus ? call.mobilityStatus.charAt(0).toUpperCase() + call.mobilityStatus.slice(1) : "-"}
+            />
+            <InfoBlock 
+              label="Last Name:" 
+              value={call.lastName || call.contactName?.split(' ')[1] || "-"} 
+            />
+            <InfoBlock 
+              label="Age:" 
+              value={call.age?.toString() || "-"}
+            />
           </div>
         </div>
-      </div>
+      )}
+
+      {activeTab === "interactions" && (
+        <div className="text-sm text-gray-600 py-8">
+          No interaction history available
+        </div>
+      )}
+
+      {activeTab === "billing" && (
+        <div className="text-sm text-gray-600 py-8">
+          No billing history available
+        </div>
+      )}
+
+      {activeTab === "service" && (
+        <div className="text-sm text-gray-600 py-8">
+          No service plans available
+        </div>
+      )}
     </div>
   );
 }
 
-
 function InfoBlock({ 
-    label, 
-    value, 
-    valueClassName 
+  label, 
+  value, 
+  valueClassName 
 }: { 
-    label: string, 
-    value: string | number, 
-    valueClassName?: string 
+  label: string, 
+  value: string | number, 
+  valueClassName?: string 
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-[15px] font-bold text-[#1a1c1e]">
+      <span className="text-sm font-bold text-gray-900">
         {label}
       </span>
-      <span className={cn("text-[14px] text-slate-600 font-medium", valueClassName)}>
+      <span className={cn("text-sm text-gray-600 font-medium", valueClassName)}>
         {value}
       </span>
     </div>
