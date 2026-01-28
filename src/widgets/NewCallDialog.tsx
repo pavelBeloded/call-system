@@ -48,7 +48,7 @@ export function NewCallDialog() {
           <Input
             placeholder="Enter phone number (e.g., 8831240087)"
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={(e) => setPhoneNumber(prev => /^\d{0,15}$/g.test(e.target.value.trim()) ? e.target.value : prev)}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !initiateCall.isPending) {
                 handleCall();

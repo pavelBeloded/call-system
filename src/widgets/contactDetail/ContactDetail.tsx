@@ -1,4 +1,4 @@
-import { useCall } from "@/entities/call";
+import { useCall, useInitiateCall } from "@/entities/call";
 import { useSearch } from "@tanstack/react-router";
 import { Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,8 +11,18 @@ export function ContactDetail() {
   const search = useSearch({ from: "/communication" });
   const { data: call, isLoading, error } = useCall(search.callId);
   const [activeTab, setActiveTab] = useState<TabType>("details");
+  const initiateCall = useInitiateCall();
 
-  // When no call is selected
+  const handleCall = async () => {
+    if (!call?.phoneNumber) return;
+
+    try {
+      await initiateCall.mutateAsync(call.phoneNumber);
+    } catch (error) {
+      console.error("Failed to initiate call:", error);
+    }
+  };
+
   if (!search.callId) {
     return (
       <div className="flex h-full items-center justify-center text-slate-400 italic">
@@ -49,13 +59,15 @@ export function ContactDetail() {
 
   return (
     <div className="bg-white h-full px-4 py-4 space-y-6">
-      {/* Header with name and action buttons */}
       <div className="flex justify-between items-start">
         <h2 className="text-2xl font-bold text-gray-900">
           {call.contactName || "Unknown"}
         </h2>
         <div className="flex gap-2">
-          <button className="p-2 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition-colors">
+          <button
+            onClick={handleCall}
+            disabled={!call.phoneNumber.trim() || initiateCall.isPending}
+            className="p-2 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition-colors">
             <Phone size={18} />
           </button>
           <button className="p-2 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition-colors">
@@ -64,7 +76,6 @@ export function ContactDetail() {
         </div>
       </div>
 
-      {/* Tabs */}
       <div className="flex gap-6 border-b border-gray-200">
         {tabs.map((tab) => (
           <button
@@ -84,8 +95,6 @@ export function ContactDetail() {
           </button>
         ))}
       </div>
-
-      {/* Content */}
       {activeTab === "details" && (
         <div className="space-y-6">
           <h3 className="text-lg font-bold text-gray-900">
