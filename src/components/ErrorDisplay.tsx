@@ -61,7 +61,7 @@ export function ErrorDisplay({
   return (
     <div className={`rounded-lg border ${borderColor} ${bgColor} p-6`}>
       <div className="flex items-start gap-3">
-        <Icon className={`h-6 w-6 ${iconColor} mt-0.5 flex-shrink-0`} />
+        <Icon className={`h-6 w-6 ${iconColor} mt-0.5 shrink-0`} />
         <div className="flex-1 space-y-2">
           {title && <h3 className={`font-semibold ${titleColor}`}>{title}</h3>}
           <p className={`text-sm ${textColor}`}>{message}</p>

@@ -23,7 +23,7 @@ export function ContactDetail() {
 
   if (isLoading) {
     return (
-      <div className="p-8 flex justify-center items-center min-h-[400px]">
+      <div className="p-8 flex justify-center items-center min-h-100">
         <div className="flex flex-col items-center gap-2">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           <p className="text-sm text-slate-500">Loading details...</p>
@@ -107,7 +107,7 @@ export function ContactDetail() {
               value={
                 call.mobilityStatus
                   ? call.mobilityStatus.charAt(0).toUpperCase() +
-                    call.mobilityStatus.slice(1)
+                  call.mobilityStatus.slice(1)
                   : "-"
               }
             />

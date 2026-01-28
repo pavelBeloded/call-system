@@ -21,8 +21,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
@@ -69,9 +67,9 @@ export function DataTable<
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -87,13 +85,13 @@ export function DataTable<
                   className={cn(
                     "cursor-pointer transition-colors border-b last:border-0",
                     row.original.id === selectedId &&
-                      "bg-blue-50 hover:bg-blue-100",
+                    "bg-blue-50 hover:bg-blue-100",
                     row.original.type === "missed" &&
-                      row.original.id !== selectedId &&
-                      "bg-red-50 hover:bg-red-100",
                     row.original.id !== selectedId &&
-                      row.original.type !== "missed" &&
-                      "hover:bg-slate-50",
+                    "bg-red-50 hover:bg-red-100",
+                    row.original.id !== selectedId &&
+                    row.original.type !== "missed" &&
+                    "hover:bg-slate-50",
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (

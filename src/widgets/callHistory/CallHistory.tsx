@@ -14,13 +14,13 @@ const filterOptions: {
   label: string;
   value: AccountStatus | CallType | "all";
 }[] = [
-  { label: "All", value: "all" },
-  { label: "Missed", value: "missed" },
-  { label: "Prospect", value: "prospect" },
-  { label: "Lead", value: "lead" },
-  { label: "Client", value: "client" },
-  { label: "No Account Created", value: "no_account" },
-];
+    { label: "All", value: "all" },
+    { label: "Missed", value: "missed" },
+    { label: "Prospect", value: "prospect" },
+    { label: "Lead", value: "lead" },
+    { label: "Client", value: "client" },
+    { label: "No Account Created", value: "no_account" },
+  ];
 
 export function CallHistory() {
   const { data: calls, isLoading, error } = useCalls();
@@ -61,7 +61,7 @@ export function CallHistory() {
 
   if (isLoading) {
     return (
-      <Card className="p-8 flex justify-center items-center min-h-[400px]">
+      <Card className="p-8 flex justify-center items-center min-h-100">
         <div className="flex flex-col items-center gap-2">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
           <p className="text-sm text-slate-500">Loading call history...</p>
@@ -96,11 +96,10 @@ export function CallHistory() {
           <Badge
             key={option.value}
             variant={activeFilter === option.value ? "default" : "outline"}
-            className={`cursor-pointer px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              activeFilter === option.value
+            className={`cursor-pointer px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${activeFilter === option.value
                 ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-            }`}
+              }`}
             onClick={() => setActiveFilter(option.value)}
           >
             {option.label}
