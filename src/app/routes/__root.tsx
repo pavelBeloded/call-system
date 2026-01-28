@@ -14,7 +14,6 @@ function Root() {
         <AppSidebar />
 
         <main className="min-h-screen">
-
           <div className="pt-16 px-6">
             <Outlet />
           </div>

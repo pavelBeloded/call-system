@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -10,7 +10,7 @@ import {
   SortingState,
   ColumnFiltersState,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -19,27 +19,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils" 
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  onRowClick?: (data: TData) => void
-  selectedId?: string
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  onRowClick?: (data: TData) => void;
+  selectedId?: string;
 }
 
-export function DataTable<TData extends { id: string; type: string; accountStatus?: string }, TValue>({
-  columns,
-  data,
-  onRowClick,
-  selectedId
-}: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+export function DataTable<
+  TData extends { id: string; type: string; accountStatus?: string },
+  TValue,
+>({ columns, data, onRowClick, selectedId }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data,
@@ -53,11 +51,10 @@ export function DataTable<TData extends { id: string; type: string; accountStatu
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-  })
+  });
 
   return (
     <div className="w-full">
-
       {/* TABLE */}
       <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
         <Table>
@@ -65,10 +62,16 @@ export function DataTable<TData extends { id: string; type: string; accountStatu
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-transparent">
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="text-xs uppercase font-semibold text-slate-500">
+                  <TableHead
+                    key={header.id}
+                    className="text-xs uppercase font-semibold text-slate-500"
+                  >
                     {header.isPlaceholder
                       ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -83,21 +86,32 @@ export function DataTable<TData extends { id: string; type: string; accountStatu
                   onClick={() => onRowClick?.(row.original)}
                   className={cn(
                     "cursor-pointer transition-colors border-b last:border-0",
-                    row.original.id === selectedId && "bg-blue-50 hover:bg-blue-100",
-                    row.original.type === "missed" && row.original.id !== selectedId && "bg-red-50 hover:bg-red-100",
-                    row.original.id !== selectedId && row.original.type !== "missed" && "hover:bg-slate-50"
+                    row.original.id === selectedId &&
+                      "bg-blue-50 hover:bg-blue-100",
+                    row.original.type === "missed" &&
+                      row.original.id !== selectedId &&
+                      "bg-red-50 hover:bg-red-100",
+                    row.original.id !== selectedId &&
+                      row.original.type !== "missed" &&
+                      "hover:bg-slate-50",
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-3">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center text-slate-400">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center text-slate-400"
+                >
                   No results found.
                 </TableCell>
               </TableRow>
@@ -106,5 +120,5 @@ export function DataTable<TData extends { id: string; type: string; accountStatu
         </Table>
       </div>
     </div>
-  )
+  );
 }

@@ -3,8 +3,8 @@ import { Call } from "../model/types";
 
 export function useCall(id?: string) {
   return useQuery<Call>({
-    queryKey: ["calls", id], 
-    
+    queryKey: ["calls", id],
+
     queryFn: async () => {
       const response = await fetch(`/api/calls/${id}`);
 
@@ -13,7 +13,7 @@ export function useCall(id?: string) {
       }
       return response.json();
     },
-    
-    enabled: !!id, 
+
+    enabled: !!id,
   });
 }

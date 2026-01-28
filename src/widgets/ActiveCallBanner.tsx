@@ -15,7 +15,10 @@ export function ActiveCallBanner() {
     }
 
     const interval = setInterval(() => {
-      const elapsed = Math.floor((new Date().getTime() - new Date(activeCall.startTime).getTime()) / 1000);
+      const elapsed = Math.floor(
+        (new Date().getTime() - new Date(activeCall.startTime).getTime()) /
+          1000,
+      );
       setCallDuration(elapsed);
     }, 1000);
 
@@ -30,7 +33,7 @@ export function ActiveCallBanner() {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    return `${hrs.toString().padStart(2, '0')}-${mins.toString().padStart(2, '0')}-${secs.toString().padStart(2, '0')}`;
+    return `${hrs.toString().padStart(2, "0")}-${mins.toString().padStart(2, "0")}-${secs.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -39,8 +42,12 @@ export function ActiveCallBanner() {
         <div className="flex items-center gap-3">
           <Phone className="h-4 w-4 text-gray-600" />
           <span className="text-sm text-gray-600">Speaking with</span>
-          <span className="text-sm font-semibold text-gray-900">{activeCall.contactName}</span>
-          <span className="text-sm text-gray-600">{formatDuration(callDuration)}</span>
+          <span className="text-sm font-semibold text-gray-900">
+            {activeCall.contactName}
+          </span>
+          <span className="text-sm text-gray-600">
+            {formatDuration(callDuration)}
+          </span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -56,16 +63,16 @@ export function ActiveCallBanner() {
           <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
             <Grid3x3 className="h-4 w-4" />
           </Button>
-          <Button 
-            variant="default" 
+          <Button
+            variant="default"
             size="sm"
             className="bg-blue-600 hover:bg-blue-700 h-9 px-4"
           >
             <Pause className="h-4 w-4 mr-2" />
             Hold
           </Button>
-          <Button 
-            variant="destructive" 
+          <Button
+            variant="destructive"
             size="sm"
             className="h-9 px-4"
             onClick={() => endCall.mutate()}

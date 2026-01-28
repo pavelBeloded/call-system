@@ -8,7 +8,7 @@ import { NotFoundError } from "@/components/ErrorDisplay";
 type TabType = "details" | "interactions" | "billing" | "service";
 
 export function ContactDetail() {
-  const search = useSearch({ from: '/communication' });
+  const search = useSearch({ from: "/communication" });
   const { data: call, isLoading, error } = useCall(search.callId);
   const [activeTab, setActiveTab] = useState<TabType>("details");
 
@@ -74,7 +74,7 @@ export function ContactDetail() {
               "pb-3 text-sm font-medium transition-colors relative",
               activeTab === tab.id
                 ? "text-blue-600 font-bold"
-                : "text-gray-600 hover:text-gray-900"
+                : "text-gray-600 hover:text-gray-900",
             )}
           >
             {tab.label}
@@ -93,30 +93,29 @@ export function ContactDetail() {
           </h3>
 
           <div className="grid grid-cols-2 gap-x-12 gap-y-6">
-            <InfoBlock 
-              label="First Name:" 
-              value={call.firstName || call.contactName?.split(' ')[0] || "-"} 
+            <InfoBlock
+              label="First Name:"
+              value={call.firstName || call.contactName?.split(" ")[0] || "-"}
             />
-            <InfoBlock 
-              label="Phone Number:" 
-              value={call.phoneNumber || "Unknown"} 
+            <InfoBlock
+              label="Phone Number:"
+              value={call.phoneNumber || "Unknown"}
             />
-            <InfoBlock 
-              label="Middle Name:" 
-              value={call.middleName || "-"} 
+            <InfoBlock label="Middle Name:" value={call.middleName || "-"} />
+            <InfoBlock
+              label="Mobility Status:"
+              value={
+                call.mobilityStatus
+                  ? call.mobilityStatus.charAt(0).toUpperCase() +
+                    call.mobilityStatus.slice(1)
+                  : "-"
+              }
             />
-            <InfoBlock 
-              label="Mobility Status:" 
-              value={call.mobilityStatus ? call.mobilityStatus.charAt(0).toUpperCase() + call.mobilityStatus.slice(1) : "-"}
+            <InfoBlock
+              label="Last Name:"
+              value={call.lastName || call.contactName?.split(" ")[1] || "-"}
             />
-            <InfoBlock 
-              label="Last Name:" 
-              value={call.lastName || call.contactName?.split(' ')[1] || "-"} 
-            />
-            <InfoBlock 
-              label="Age:" 
-              value={call.age?.toString() || "-"}
-            />
+            <InfoBlock label="Age:" value={call.age?.toString() || "-"} />
           </div>
         </div>
       )}
@@ -142,20 +141,18 @@ export function ContactDetail() {
   );
 }
 
-function InfoBlock({ 
-  label, 
-  value, 
-  valueClassName 
-}: { 
-  label: string, 
-  value: string | number, 
-  valueClassName?: string 
+function InfoBlock({
+  label,
+  value,
+  valueClassName,
+}: {
+  label: string;
+  value: string | number;
+  valueClassName?: string;
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-sm font-bold text-gray-900">
-        {label}
-      </span>
+      <span className="text-sm font-bold text-gray-900">{label}</span>
       <span className={cn("text-sm text-gray-600 font-medium", valueClassName)}>
         {value}
       </span>

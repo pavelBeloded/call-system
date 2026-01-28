@@ -44,10 +44,11 @@ export class ErrorBoundary extends Component<Props, State> {
               <AlertCircle className="h-8 w-8" />
               <h1 className="text-2xl font-bold">Something went wrong</h1>
             </div>
-            
+
             <div className="space-y-2">
               <p className="text-gray-700">
-                An unexpected error occurred. This has been logged and we'll look into it.
+                An unexpected error occurred. This has been logged and we'll
+                look into it.
               </p>
               {this.state.error && (
                 <details className="mt-4">
@@ -61,10 +62,7 @@ export class ErrorBoundary extends Component<Props, State> {
               )}
             </div>
 
-            <Button 
-              onClick={this.handleReset}
-              className="w-full"
-            >
+            <Button onClick={this.handleReset} className="w-full">
               Reload Application
             </Button>
           </div>

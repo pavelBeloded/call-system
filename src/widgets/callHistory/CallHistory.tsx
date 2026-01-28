@@ -1,59 +1,63 @@
-import { useNavigate, useSearch } from "@tanstack/react-router"
-import { useCalls, AccountStatus, CallType } from "@/entities/call"
-import { DataTable } from "./DataTable"
-import { columns } from "./columns"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Search } from "lucide-react"
-import { useState } from "react"
-import { NewCallDialog } from "../NewCallDialog"
-import { LoadingError } from "@/components/ErrorDisplay"
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useCalls, AccountStatus, CallType } from "@/entities/call";
+import { DataTable } from "./DataTable";
+import { columns } from "./columns";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { useState } from "react";
+import { NewCallDialog } from "../NewCallDialog";
+import { LoadingError } from "@/components/ErrorDisplay";
 
-const filterOptions: { label: string; value: AccountStatus | CallType | "all" }[] = [
+const filterOptions: {
+  label: string;
+  value: AccountStatus | CallType | "all";
+}[] = [
   { label: "All", value: "all" },
   { label: "Missed", value: "missed" },
   { label: "Prospect", value: "prospect" },
   { label: "Lead", value: "lead" },
   { label: "Client", value: "client" },
   { label: "No Account Created", value: "no_account" },
-]
+];
 
 export function CallHistory() {
-  const { data: calls, isLoading, error } = useCalls()
-  const [searchQuery, setSearchQuery] = useState("")
-  const [activeFilter, setActiveFilter] = useState<string>("all")
+  const { data: calls, isLoading, error } = useCalls();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<string>("all");
 
-  const search = useSearch({ from: '/communication' })
-  const navigate = useNavigate({ from: '/communication' })
+  const search = useSearch({ from: "/communication" });
+  const navigate = useNavigate({ from: "/communication" });
 
   const handleRowClick = (id: string) => {
     navigate({
-      search: (prev) => ({ 
-        ...prev, 
-        callId: id 
+      search: (prev) => ({
+        ...prev,
+        callId: id,
       }),
-    })
-  }
+    });
+  };
 
-  const filteredCalls = calls?.filter(call => {
-    if (activeFilter !== "all") {
-      if (call.type === activeFilter || call.accountStatus === activeFilter) {
-      } else {
-        return false
+  const filteredCalls =
+    calls?.filter((call) => {
+      if (activeFilter !== "all") {
+        if (call.type === activeFilter || call.accountStatus === activeFilter) {
+        } else {
+          return false;
+        }
       }
-    }
 
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      return (
-        call.phoneNumber.includes(query) ||
-        call.contactName?.toLowerCase().includes(query)
-      )
-    }
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        return (
+          call.phoneNumber.includes(query) ||
+          call.contactName?.toLowerCase().includes(query)
+        );
+      }
 
-    return true
-  }) || []
+      return true;
+    }) || [];
 
   if (isLoading) {
     return (
@@ -63,21 +67,25 @@ export function CallHistory() {
           <p className="text-sm text-slate-500">Loading call history...</p>
         </div>
       </Card>
-    )
+    );
   }
 
   if (error) {
-    return <LoadingError onRetry={() => window.location.reload()} />
+    return <LoadingError onRetry={() => window.location.reload()} />;
   }
 
-  const activeCallCount = filteredCalls.filter(c => c.type === "incoming" || c.type === "outgoing").length
+  const activeCallCount = filteredCalls.filter(
+    (c) => c.type === "incoming" || c.type === "outgoing",
+  ).length;
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-baseline gap-2">
           <h2 className="text-xl font-bold text-gray-900">Call history</h2>
-          <span className="text-sm text-gray-500">{activeCallCount} active call{activeCallCount !== 1 ? 's' : ''}</span>
+          <span className="text-sm text-gray-500">
+            {activeCallCount} active call{activeCallCount !== 1 ? "s" : ""}
+          </span>
         </div>
         <NewCallDialog />
       </div>
@@ -111,12 +119,12 @@ export function CallHistory() {
         </div>
       </div>
 
-      <DataTable 
-        columns={columns} 
-        data={filteredCalls} 
+      <DataTable
+        columns={columns}
+        data={filteredCalls}
         selectedId={search.callId}
         onRowClick={(row) => handleRowClick(row.id)}
       />
     </div>
-  )
+  );
 }

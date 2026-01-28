@@ -1,6 +1,5 @@
-import { http, HttpResponse } from 'msw'
-import { Call, ActiveCall } from '@/entities/call'
-
+import { http, HttpResponse } from "msw";
+import { Call, ActiveCall } from "@/entities/call";
 
 const calls: Call[] = [
   {
@@ -66,16 +65,15 @@ const calls: Call[] = [
 
 let activeCall: ActiveCall | null = null;
 
-
 export const handlers = [
   http.get("/api/calls", () => {
     console.log("GET /api/calls");
-    return HttpResponse.json<Call[]>(calls)
+    return HttpResponse.json<Call[]>(calls);
   }),
 
-  http.get('/api/calls/:id', ({ params }) => {
+  http.get("/api/calls/:id", ({ params }) => {
     const { id } = params;
-    const call = calls.find(c => c.id === id);
+    const call = calls.find((c) => c.id === id);
 
     if (!call) {
       return new HttpResponse(null, { status: 404 });
@@ -84,21 +82,23 @@ export const handlers = [
     return HttpResponse.json(call);
   }),
 
-   http.get('/api/active-call', () => {
+  http.get("/api/active-call", () => {
     if (!activeCall) {
       return new HttpResponse(null, { status: 404 });
     }
     return HttpResponse.json(activeCall);
   }),
 
-  http.post('/api/calls/initiate', async ({ request }) => {
-    const body = await request.json() as { phoneNumber: string };
-    
-    await new Promise(resolve => setTimeout(resolve, 2000));
+  http.post("/api/calls/initiate", async ({ request }) => {
+    const body = (await request.json()) as { phoneNumber: string };
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const newCallId = String(calls.length + 1);
-    const existingContact = calls.find(c => c.phoneNumber === body.phoneNumber);
-    
+    const existingContact = calls.find(
+      (c) => c.phoneNumber === body.phoneNumber,
+    );
+
     activeCall = {
       callId: newCallId,
       contactName: existingContact?.contactName || "Unknown",
@@ -126,14 +126,16 @@ export const handlers = [
     return HttpResponse.json(activeCall);
   }),
 
-   http.post('/api/calls/end', async () => {
+  http.post("/api/calls/end", async () => {
     if (!activeCall) {
       return new HttpResponse(null, { status: 404 });
     }
 
-    const callToUpdate = calls.find(c => c.id === activeCall?.callId);
+    const callToUpdate = calls.find((c) => c.id === activeCall?.callId);
     if (callToUpdate) {
-      const duration = Math.floor((new Date().getTime() - activeCall.startTime.getTime()) / 1000);
+      const duration = Math.floor(
+        (new Date().getTime() - activeCall.startTime.getTime()) / 1000,
+      );
       callToUpdate.duration = duration;
       callToUpdate.recording = true;
     }
@@ -142,4 +144,4 @@ export const handlers = [
 
     return HttpResponse.json({ success: true });
   }),
-]
+];

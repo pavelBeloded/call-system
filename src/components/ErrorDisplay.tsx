@@ -8,11 +8,11 @@ interface ErrorDisplayProps {
   type?: "error" | "warning" | "network" | "not-found";
 }
 
-export function ErrorDisplay({ 
-  title, 
-  message, 
+export function ErrorDisplay({
+  title,
+  message,
   onRetry,
-  type = "error" 
+  type = "error",
 }: ErrorDisplayProps) {
   const config = {
     error: {
@@ -49,21 +49,22 @@ export function ErrorDisplay({
     },
   };
 
-  const { icon: Icon, bgColor, borderColor, iconColor, titleColor, textColor } = config[type];
+  const {
+    icon: Icon,
+    bgColor,
+    borderColor,
+    iconColor,
+    titleColor,
+    textColor,
+  } = config[type];
 
   return (
     <div className={`rounded-lg border ${borderColor} ${bgColor} p-6`}>
       <div className="flex items-start gap-3">
         <Icon className={`h-6 w-6 ${iconColor} mt-0.5 flex-shrink-0`} />
         <div className="flex-1 space-y-2">
-          {title && (
-            <h3 className={`font-semibold ${titleColor}`}>
-              {title}
-            </h3>
-          )}
-          <p className={`text-sm ${textColor}`}>
-            {message}
-          </p>
+          {title && <h3 className={`font-semibold ${titleColor}`}>{title}</h3>}
+          <p className={`text-sm ${textColor}`}>{message}</p>
           {onRetry && (
             <Button
               variant="outline"
@@ -101,7 +102,13 @@ export function NotFoundError({ resource = "item" }: { resource?: string }) {
   );
 }
 
-export function GenericError({ message, onRetry }: { message?: string; onRetry?: () => void }) {
+export function GenericError({
+  message,
+  onRetry,
+}: {
+  message?: string;
+  onRetry?: () => void;
+}) {
   return (
     <ErrorDisplay
       title="Something went wrong"

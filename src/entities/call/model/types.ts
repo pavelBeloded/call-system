@@ -1,36 +1,32 @@
-export type CallType = "incoming" | "outgoing" | "missed"
+export type CallType = "incoming" | "outgoing" | "missed";
 
-export type AccountStatus =
-  | "client"
-  | "lead"
-  | "prospect"
-  | "no_account"
+export type AccountStatus = "client" | "lead" | "prospect" | "no_account";
 
-export type MobilityStatus = "working" | "idle" | "offline"
+export type MobilityStatus = "working" | "idle" | "offline";
 
 export interface Call {
-  id: string
-  phoneNumber: string 
-  contactName?: string
-  firstName?: string
-  middleName?: string
-  lastName?: string
+  id: string;
+  phoneNumber: string;
+  contactName?: string;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
 
-  time: string
-  duration?: number
+  time: string;
+  duration?: number;
 
-  accountStatus?: AccountStatus
-  mobilityStatus?: MobilityStatus
-  age?: number
-  recording: boolean
+  accountStatus?: AccountStatus;
+  mobilityStatus?: MobilityStatus;
+  age?: number;
+  recording: boolean;
 
-  type: CallType
+  type: CallType;
 }
 
 export interface ActiveCall {
-  callId: string
-  contactName: string
-  phoneNumber: string
-  startTime: Date
-  status: "ringing" | "active" | "on-hold"
+  callId: string;
+  contactName: string;
+  phoneNumber: string;
+  startTime: Date;
+  status: "ringing" | "active" | "on-hold";
 }

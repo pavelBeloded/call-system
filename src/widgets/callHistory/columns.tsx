@@ -1,19 +1,15 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { Call } from "@/entities/call"
-import {
-  PhoneIncoming,
-  PhoneOutgoing,
-  PhoneMissed,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { ArrowUpDown } from "lucide-react"
+import { ColumnDef } from "@tanstack/react-table";
+import { Call } from "@/entities/call";
+import { PhoneIncoming, PhoneOutgoing, PhoneMissed } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
 
 /* ---------------- utils ---------------- */
 
 function formatPhone(phone: string) {
-  return phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+  return phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
 }
 
 const accountStatusMap = {
@@ -33,7 +29,7 @@ const accountStatusMap = {
     label: "No Account Created",
     className: "bg-gray-100 text-gray-600",
   },
-}
+};
 
 /* ---------------- columns ---------------- */
 
@@ -50,16 +46,16 @@ export const columns: ColumnDef<Call>[] = [
     accessorKey: "phoneNumber",
     header: "Recent",
     cell: ({ row }) => {
-      const call = row.original
+      const call = row.original;
 
       const Icon =
         call.type === "incoming"
           ? PhoneIncoming
           : call.type === "outgoing"
-          ? PhoneOutgoing
-          : PhoneMissed
+            ? PhoneOutgoing
+            : PhoneMissed;
 
-      const isMissed = call.type === "missed"
+      const isMissed = call.type === "missed";
 
       return (
         <div className="flex items-center gap-3">
@@ -85,7 +81,7 @@ export const columns: ColumnDef<Call>[] = [
             )}
           </div>
         </div>
-      )
+      );
     },
   },
 
@@ -94,9 +90,7 @@ export const columns: ColumnDef<Call>[] = [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        onClick={() =>
-          column.toggleSorting(column.getIsSorted() === "asc")
-        }
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Time (EST)
         <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -108,17 +102,17 @@ export const columns: ColumnDef<Call>[] = [
     accessorKey: "accountStatus",
     header: "Account Status",
     cell: ({ row }) => {
-      const status = row.original.accountStatus
+      const status = row.original.accountStatus;
 
       if (!status) {
         return (
           <span className="rounded-full px-2 py-0.5 text-xs bg-gray-100 text-gray-500">
             No Information
           </span>
-        )
+        );
       }
 
-      const s = accountStatusMap[status]
+      const s = accountStatusMap[status];
 
       return (
         <span
@@ -126,7 +120,7 @@ export const columns: ColumnDef<Call>[] = [
         >
           {s.label}
         </span>
-      )
+      );
     },
   },
 
@@ -134,20 +128,20 @@ export const columns: ColumnDef<Call>[] = [
     id: "recording",
     header: "Recording",
     cell: ({ row }) => {
-      const call = row.original
+      const call = row.original;
 
       if (call.type === "missed" || !call.recording || !call.duration) {
-        return <span className="text-muted-foreground">—</span>
+        return <span className="text-muted-foreground">—</span>;
       }
 
-      const m = Math.floor(call.duration / 60)
-      const s = call.duration % 60
+      const m = Math.floor(call.duration / 60);
+      const s = call.duration % 60;
 
       return (
         <span className="flex items-center gap-1 text-sm">
           ▶ {m}:{s.toString().padStart(2, "0")}
         </span>
-      )
+      );
     },
   },
-]
+];
