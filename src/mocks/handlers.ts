@@ -1,71 +1,14 @@
 import { http, HttpResponse } from "msw";
 import { Call, ActiveCall } from "@/entities/call";
+import { calls, tasks } from "./db";
+import { Task } from "@/entities/task";
 
-const calls: Call[] = [
-  {
-    id: "1",
-    contactName: "Tim Miller",
-    firstName: "Tim",
-    lastName: "Miller",
-    phoneNumber: "8831240087",
-    time: "Dec 16, 2022 - 9:03:11",
-    accountStatus: "client",
-    mobilityStatus: "working",
-    age: 49,
-    duration: 168,
-    recording: true,
-    type: "incoming",
-  },
-  {
-    id: "2",
-    contactName: "Unknown",
-    phoneNumber: "8831243413",
-    time: "Dec 16, 2022 - 9:10:44",
-    accountStatus: "no_account",
-    recording: false,
-    type: "missed",
-  },
-  {
-    id: "3",
-    contactName: "Adelaide Johnson",
-    firstName: "Adelaide",
-    lastName: "Johnson",
-    phoneNumber: "3762750915",
-    time: "Dec 16, 2022 - 9:15:22",
-    accountStatus: "lead",
-    duration: 245,
-    recording: true,
-    type: "outgoing",
-  },
-  {
-    id: "4",
-    contactName: "Gregory Norm",
-    firstName: "Gregory",
-    lastName: "Norm",
-    phoneNumber: "8844222245",
-    time: "Dec 10, 2022 - 5:11:42",
-    accountStatus: "client",
-    mobilityStatus: "working",
-    age: 42,
-    duration: 119,
-    recording: true,
-    type: "incoming",
-  },
-  {
-    id: "5",
-    phoneNumber: "8831243413",
-    contactName: "Unknown",
-    time: "Dec 03, 2022 - 2:34:44",
-    accountStatus: "no_account",
-    duration: 44,
-    recording: false,
-    type: "missed",
-  },
-];
+
 
 let activeCall: ActiveCall | null = null;
 
 export const handlers = [
+  // Calls
   http.get("/api/calls", () => {
     console.log("GET /api/calls");
     return HttpResponse.json<Call[]>(calls);
@@ -142,6 +85,82 @@ export const handlers = [
 
     activeCall = null;
 
+    return HttpResponse.json({ success: true });
+  }),
+
+  // Tasks
+  // GET    /api/tasks              // Get all tasks
+  // GET    /api/tasks/:id          // Get single task
+  // POST   /api/tasks              // Create new task
+  // PATCH  /api/tasks/:id          // Update task (status, etc.)
+  // DELETE /api/tasks/:id          // Delete task
+
+  http.get("/api/tasks", () => {
+    console.log("GET /api/tasks");
+    return HttpResponse.json(tasks);
+  }),
+
+  http.get("/api/tasks/:id", ({ params }) => {
+    const { id } = params;
+    const task = tasks.find((t) => t.id === id);
+
+    if (!task) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    return HttpResponse.json(task);
+  }),
+
+  http.post("/api/tasks", async ({ request }) => {
+    const body = (await request.json()) as Task;
+
+    const taskIdPattern = /^[A-Z]\d{1,3}$/;
+    if (!taskIdPattern.test(body.id)) {
+      return HttpResponse.json(
+        { error: "Invalid Task ID format" },
+        { status: 400 }
+      );
+    }
+
+    if (tasks.find((t) => t.id === body.id)) {
+      return HttpResponse.json(
+        { error: "Task ID already exists" },
+        { status: 409 }
+      );
+    }
+
+    const newTask = { ...body };
+    tasks.unshift(newTask);
+    return HttpResponse.json(newTask, { status: 201 });
+  }),
+
+  http.patch("/api/tasks/:id", async ({ params, request }) => {
+    const { id } = params;
+    const body = (await request.json()) as Partial<Task>;
+
+    const taskIndex = tasks.findIndex((t) => t.id === id);
+
+    if (taskIndex === -1) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    tasks[taskIndex] = {
+      ...tasks[taskIndex],
+      ...body
+    };
+
+    return HttpResponse.json(tasks[taskIndex]);
+  }),
+
+  http.delete("/api/tasks/:id", ({ params }) => {
+    const { id } = params;
+    const taskIndex = tasks.findIndex((t) => t.id === id);
+
+    if (taskIndex === -1) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    tasks.splice(taskIndex, 1);
     return HttpResponse.json({ success: true });
   }),
 ];
