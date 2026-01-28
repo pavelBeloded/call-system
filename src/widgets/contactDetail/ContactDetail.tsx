@@ -3,6 +3,7 @@ import { useSearch } from "@tanstack/react-router";
 import { Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { NotFoundError } from "@/components/ErrorDisplay";
 
 type TabType = "details" | "interactions" | "billing" | "service";
 
@@ -33,8 +34,8 @@ export function ContactDetail() {
 
   if (error || !call) {
     return (
-      <div className="p-8 border-red-200 bg-red-50 text-red-700 rounded-lg">
-        <p className="font-semibold">Error loading contact data</p>
+      <div className="p-8">
+        <NotFoundError resource="contact" />
       </div>
     );
   }

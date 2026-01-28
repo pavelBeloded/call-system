@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import "./app/styles/index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 async function enableMocking() {
   const isMockingEnabled =
@@ -26,10 +27,10 @@ async function enableMocking() {
 const queryCient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, 
-      
-      refetchOnWindowFocus: false, 
-      
+      staleTime: 1000 * 60 * 5,
+
+      refetchOnWindowFocus: false,
+
     },
   },
 });
@@ -47,9 +48,11 @@ enableMocking().then(() => {
     const root = ReactDOM.createRoot(rootElement);
     root.render(
       <React.StrictMode>
-        <QueryClientProvider client={queryCient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
+        <ErrorBoundary>
+          <QueryClientProvider client={queryCient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </ErrorBoundary>
       </React.StrictMode>,
     );
   }

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
 import { useState } from "react"
 import { NewCallDialog } from "../NewCallDialog"
+import { LoadingError } from "@/components/ErrorDisplay"
 
 const filterOptions: { label: string; value: AccountStatus | CallType | "all" }[] = [
   { label: "All", value: "all" },
@@ -35,18 +36,14 @@ export function CallHistory() {
     })
   }
 
-  // Filter and search logic
   const filteredCalls = calls?.filter(call => {
-    // Filter by status/type
     if (activeFilter !== "all") {
       if (call.type === activeFilter || call.accountStatus === activeFilter) {
-        // Continue to search filter
       } else {
         return false
       }
     }
 
-    // Search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       return (
@@ -70,12 +67,7 @@ export function CallHistory() {
   }
 
   if (error) {
-    return (
-      <Card className="p-8 border-red-200 bg-red-50 text-red-700">
-        <p className="font-semibold">Error loading data</p>
-        <p className="text-sm">{error.message}</p>
-      </Card>
-    )
+    return <LoadingError onRetry={() => window.location.reload()} />
   }
 
   const activeCallCount = filteredCalls.filter(c => c.type === "incoming" || c.type === "outgoing").length
