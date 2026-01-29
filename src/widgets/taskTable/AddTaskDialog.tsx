@@ -43,10 +43,6 @@ const REQUEST_OPTIONS: TaskRequestType[] = [
   "Account closure",
 ];
 
-type TaskFormData = Omit<Task, "id" | "status"> & {
-  taskIdLetter: "A" | "B" | "C" | "D";
-};
-
 const TASK_LETTERS = ["A", "B", "C", "D"];
 
 export function AddTaskDialog() {

@@ -1,6 +1,5 @@
 "use client";
 import { Task } from "@/entities/task";
-import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,7 +37,6 @@ export const columns: ColumnDef<Task>[] = [
     header: "Status",
     cell: ({ row }) => {
       const status = row.original.status;
-      const config = statusMap[status];
       return <span>{statusMap[status]}</span>;
     },
   },
