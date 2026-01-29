@@ -221,7 +221,6 @@ export function AddTaskDialog() {
                     onSelect={(date) =>
                       date && setFormData((prev) => ({ ...prev, date }))
                     }
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>
@@ -257,7 +256,6 @@ export function AddTaskDialog() {
                       date &&
                       setFormData((prev) => ({ ...prev, deadline: date }))
                     }
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>
