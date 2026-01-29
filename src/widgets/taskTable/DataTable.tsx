@@ -26,14 +26,12 @@ import { cn } from "@/lib/utils";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onRowClick?: (data: TData) => void;
-  selectedId?: string;
 }
 
-export function DataTable<
-  TData extends { id: string; type: string; accountStatus?: string },
-  TValue,
->({ columns, data, onRowClick, selectedId }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -81,17 +79,8 @@ export function DataTable<
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  onClick={() => onRowClick?.(row.original)}
                   className={cn(
                     "cursor-pointer transition-colors border-b last:border-0",
-                    row.original.id === selectedId &&
-                      "bg-blue-50 hover:bg-blue-100",
-                    row.original.type === "missed" &&
-                      row.original.id !== selectedId &&
-                      "bg-red-50 hover:bg-red-100",
-                    row.original.id !== selectedId &&
-                      row.original.type !== "missed" &&
-                      "hover:bg-slate-50",
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (
