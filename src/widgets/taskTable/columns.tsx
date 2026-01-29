@@ -12,6 +12,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MoreVertical } from "lucide-react";
 import { useDeleteTask } from "@/entities/task";
 import { useState } from "react";
+import { EditTaskDialog } from "./EditTaskDialog";
 
 const statusMap = {
   in_progress: "In Progress",
@@ -61,12 +62,7 @@ export const columns: ColumnDef<Task>[] = [
 function TaskActions({ task }: { task: Task }) {
   const deleteTask = useDeleteTask();
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleEdit = () => {
-    console.log("Edit task:", task);
-    // TODO: Open edit dialog
-    // You'll create an EditTaskDialog similar to AddTaskDialog
-  };
+  const [editOpen, setEditOpen] = useState(false);
 
   const handleDelete = async () => {
     if (!confirm(`Delete task ${task.id}?`)) return;
@@ -90,7 +86,9 @@ function TaskActions({ task }: { task: Task }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setEditOpen(true)}>
+          Edit
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={handleDelete}
           disabled={isDeleting}
@@ -99,6 +97,7 @@ function TaskActions({ task }: { task: Task }) {
           {isDeleting ? "Deleting..." : "Delete"}
         </DropdownMenuItem>
       </DropdownMenuContent>
+      <EditTaskDialog task={task} open={editOpen} onOpenChange={setEditOpen} />
     </DropdownMenu>
   );
 }
