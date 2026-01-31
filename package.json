@@ -8,7 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest",
+    "graphql": "tsx src/graphql/server.ts",
+    "dev:all": "concurrently \"npm run dev\" \"npm run graphql\" --names \"VITE,GRAPHQL\" --prefix-colors \"blue,magenta\""
   },
   "dependencies": {
     "@apollo/client": "^4.1.3",
