@@ -1,9 +1,7 @@
 import { http, HttpResponse } from "msw";
 import { Call, ActiveCall } from "@/entities/call";
-import { calls, tasks } from "./db";
+import { calls, tasks } from "./data/db";
 import { Task } from "@/entities/task";
-
-
 
 let activeCall: ActiveCall | null = null;
 
@@ -118,14 +116,14 @@ export const handlers = [
     if (!taskIdPattern.test(body.id)) {
       return HttpResponse.json(
         { error: "Invalid Task ID format" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (tasks.find((t) => t.id === body.id)) {
       return HttpResponse.json(
         { error: "Task ID already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -146,7 +144,7 @@ export const handlers = [
 
     tasks[taskIndex] = {
       ...tasks[taskIndex],
-      ...body
+      ...body,
     };
 
     return HttpResponse.json(tasks[taskIndex]);
