@@ -4,7 +4,6 @@ import { Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { NotFoundError } from "@/components/ErrorDisplay";
-
 type TabType = "details" | "interactions" | "billing" | "service";
 
 export function ContactDetail() {
@@ -67,7 +66,8 @@ export function ContactDetail() {
           <button
             onClick={handleCall}
             disabled={!call.phoneNumber.trim() || initiateCall.isPending}
-            className="p-2 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition-colors">
+            className="p-2 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition-colors"
+          >
             <Phone size={18} />
           </button>
           <button className="p-2 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition-colors">
@@ -116,7 +116,7 @@ export function ContactDetail() {
               value={
                 call.mobilityStatus
                   ? call.mobilityStatus.charAt(0).toUpperCase() +
-                  call.mobilityStatus.slice(1)
+                    call.mobilityStatus.slice(1)
                   : "-"
               }
             />
