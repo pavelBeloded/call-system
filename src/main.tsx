@@ -5,6 +5,8 @@ import { routeTree } from "./routeTree.gen";
 import "./app/styles/index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { apolloClient } from "./lib/apolloClient";
+import { ApolloProvider } from "@apollo/client/react";
 
 async function enableMocking() {
   const isMockingEnabled =
@@ -48,9 +50,11 @@ enableMocking().then(() => {
     root.render(
       <React.StrictMode>
         <ErrorBoundary>
-          <QueryClientProvider client={queryCient}>
-            <RouterProvider router={router} />
-          </QueryClientProvider>
+          <ApolloProvider client={apolloClient}>
+            <QueryClientProvider client={queryCient}>
+              <RouterProvider router={router} />
+            </QueryClientProvider>
+          </ApolloProvider>
         </ErrorBoundary>
       </React.StrictMode>,
     );
