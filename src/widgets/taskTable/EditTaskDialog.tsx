@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -65,16 +65,16 @@ export function EditTaskDialog({
     sendNotifications: task.sendNotifications,
   });
 
-  useEffect(() => {
-    setFormData({
-      customerId: task.customerId,
-      request: task.request,
-      status: task.status,
-      date: task.date,
-      deadline: task.deadline,
-      sendNotifications: task.sendNotifications,
-    });
-  }, [task]);
+  // useEffect(() => {
+  //   setFormData({
+  //     customerId: task.customerId,
+  //     request: task.request,
+  //     status: task.status,
+  //     date: task.date,
+  //     deadline: task.deadline,
+  //     sendNotifications: task.sendNotifications,
+  //   });
+  // }, [task]);
 
   const handleSubmit = async () => {
     try {

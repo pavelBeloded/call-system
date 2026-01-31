@@ -10,7 +10,6 @@ export function ActiveCallBanner() {
 
   useEffect(() => {
     if (!activeCall) {
-      setCallDuration(0);
       return;
     }
 
@@ -75,7 +74,10 @@ export function ActiveCallBanner() {
             variant="destructive"
             size="sm"
             className="h-9 px-4"
-            onClick={() => endCall.mutate()}
+            onClick={() => {
+              setCallDuration(0);
+              endCall.mutate();
+            }}
             disabled={endCall.isPending}
           >
             End Call

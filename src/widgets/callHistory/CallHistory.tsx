@@ -14,13 +14,13 @@ const filterOptions: {
   label: string;
   value: AccountStatus | CallType | "all";
 }[] = [
-    { label: "All", value: "all" },
-    { label: "Missed", value: "missed" },
-    { label: "Prospect", value: "prospect" },
-    { label: "Lead", value: "lead" },
-    { label: "Client", value: "client" },
-    { label: "No Account Created", value: "no_account" },
-  ];
+  { label: "All", value: "all" },
+  { label: "Missed", value: "missed" },
+  { label: "Prospect", value: "prospect" },
+  { label: "Lead", value: "lead" },
+  { label: "Client", value: "client" },
+  { label: "No Account Created", value: "no_account" },
+];
 
 export function CallHistory() {
   const { data: calls, isLoading, error } = useCalls();
@@ -41,11 +41,12 @@ export function CallHistory() {
 
   const filteredCalls =
     calls?.filter((call) => {
-      if (activeFilter !== "all") {
-        if (call.type === activeFilter || call.accountStatus === activeFilter) {
-        } else {
-          return false;
-        }
+      if (
+        activeFilter !== "all" &&
+        call.type !== activeFilter &&
+        call.accountStatus !== activeFilter
+      ) {
+        return false;
       }
 
       if (searchQuery) {
@@ -57,7 +58,7 @@ export function CallHistory() {
       }
 
       return true;
-    }) || [];
+    }) ?? [];
 
   if (isLoading) {
     return (
@@ -96,10 +97,11 @@ export function CallHistory() {
           <Badge
             key={option.value}
             variant={activeFilter === option.value ? "default" : "outline"}
-            className={`cursor-pointer px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${activeFilter === option.value
-              ? "bg-blue-600 text-white hover:bg-blue-700"
-              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-              }`}
+            className={`cursor-pointer px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              activeFilter === option.value
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+            }`}
             onClick={() => setActiveFilter(option.value)}
           >
             {option.label}

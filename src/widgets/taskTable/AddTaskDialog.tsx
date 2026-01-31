@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Plus, CalendarIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -59,12 +59,7 @@ export function AddTaskDialog() {
     sendNotifications: true,
   });
 
-  const [generatedTaskId, setGeneratedTaskId] = useState("");
-
-  useEffect(() => {
-    const newId = generateTaskId(formData.taskIdLetter, existingTasks);
-    setGeneratedTaskId(newId);
-  }, [formData.taskIdLetter, existingTasks]);
+  const generatedTaskId = generateTaskId(formData.taskIdLetter, existingTasks);
 
   const handleSubmit = async () => {
     if (!formData.customerId || !formData.request || !generatedTaskId) {
