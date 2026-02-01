@@ -17,7 +17,7 @@ interface ChatPanelProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const WS_URL = "wss://ws.ifelse.io";
+const WS_URL = import.meta.env.VITE_WS_URL;
 
 export function ChatPanel({ open, onOpenChange }: ChatPanelProps) {
   const [inputValue, setInputValue] = useState("");

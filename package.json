@@ -50,6 +50,8 @@
     "@commitlint/cli": "^20.4.0",
     "@commitlint/config-conventional": "^20.4.0",
     "@eslint/js": "^9.39.1",
+    "@graphql-tools/mock": "^9.1.5",
+    "@graphql-tools/schema": "^10.0.31",
     "@tanstack/eslint-plugin-query": "^5.91.2",
     "@tanstack/router-plugin": "^1.146.0",
     "@types/node": "^24.10.9",

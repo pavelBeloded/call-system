@@ -1,9 +1,43 @@
-import { http, HttpResponse } from "msw";
+import { graphql, http, HttpResponse } from "msw";
 import { Call, ActiveCall } from "@/entities/call";
-import { calls, tasks } from "./data/db";
+import { baseContacts, calls, tasks } from "./data/db";
 import { Task } from "@/entities/task";
-
+import { generateContactStatistics } from "./data/shared";
 let activeCall: ActiveCall | null = null;
+
+export const graphqlHandlers = [
+  graphql.query("GetContacts", () => {
+    const contacts = baseContacts.map((contact) => ({
+      ...contact,
+      avatar: `${contact.firstName[0]}${contact.lastName[0]}`.toUpperCase(),
+      statistics: generateContactStatistics(),
+    }));
+
+    return HttpResponse.json({
+      data: { contacts },
+    });
+  }),
+
+  graphql.query("GetContact", ({ variables }) => {
+    const contact = baseContacts.find((c) => c.id === variables.id);
+
+    if (!contact) {
+      return HttpResponse.json({
+        errors: [{ message: "Contact not found" }],
+      });
+    }
+
+    return HttpResponse.json({
+      data: {
+        contact: {
+          ...contact,
+          avatar: `${contact.firstName[0]}${contact.lastName[0]}`.toUpperCase(),
+          statistics: generateContactStatistics(),
+        },
+      },
+    });
+  }),
+];
 
 export const handlers = [
   // Calls
@@ -161,4 +195,6 @@ export const handlers = [
     tasks.splice(taskIndex, 1);
     return HttpResponse.json({ success: true });
   }),
+
+  ...graphqlHandlers,
 ];
