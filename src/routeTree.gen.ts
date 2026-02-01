@@ -8,97 +8,97 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./app/routes/__root";
-import { Route as TaskManagmentRouteImport } from "./app/routes/task-managment";
-import { Route as StatisticsRouteImport } from "./app/routes/statistics";
-import { Route as CommunicationRouteImport } from "./app/routes/communication";
-import { Route as IndexRouteImport } from "./app/routes/index";
+import { Route as rootRouteImport } from './app/routes/__root'
+import { Route as TaskManagmentRouteImport } from './app/routes/task-managment'
+import { Route as StatisticsRouteImport } from './app/routes/statistics'
+import { Route as CommunicationRouteImport } from './app/routes/communication'
+import { Route as IndexRouteImport } from './app/routes/index'
 
 const TaskManagmentRoute = TaskManagmentRouteImport.update({
-  id: "/task-managment",
-  path: "/task-managment",
+  id: '/task-managment',
+  path: '/task-managment',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const StatisticsRoute = StatisticsRouteImport.update({
-  id: "/statistics",
-  path: "/statistics",
+  id: '/statistics',
+  path: '/statistics',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const CommunicationRoute = CommunicationRouteImport.update({
-  id: "/communication",
-  path: "/communication",
+  id: '/communication',
+  path: '/communication',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/communication": typeof CommunicationRoute;
-  "/statistics": typeof StatisticsRoute;
-  "/task-managment": typeof TaskManagmentRoute;
+  '/': typeof IndexRoute
+  '/communication': typeof CommunicationRoute
+  '/statistics': typeof StatisticsRoute
+  '/task-managment': typeof TaskManagmentRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/communication": typeof CommunicationRoute;
-  "/statistics": typeof StatisticsRoute;
-  "/task-managment": typeof TaskManagmentRoute;
+  '/': typeof IndexRoute
+  '/communication': typeof CommunicationRoute
+  '/statistics': typeof StatisticsRoute
+  '/task-managment': typeof TaskManagmentRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
-  "/communication": typeof CommunicationRoute;
-  "/statistics": typeof StatisticsRoute;
-  "/task-managment": typeof TaskManagmentRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/communication': typeof CommunicationRoute
+  '/statistics': typeof StatisticsRoute
+  '/task-managment': typeof TaskManagmentRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/communication" | "/statistics" | "/task-managment";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/communication" | "/statistics" | "/task-managment";
-  id: "__root__" | "/" | "/communication" | "/statistics" | "/task-managment";
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/communication' | '/statistics' | '/task-managment'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/communication' | '/statistics' | '/task-managment'
+  id: '__root__' | '/' | '/communication' | '/statistics' | '/task-managment'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  CommunicationRoute: typeof CommunicationRoute;
-  StatisticsRoute: typeof StatisticsRoute;
-  TaskManagmentRoute: typeof TaskManagmentRoute;
+  IndexRoute: typeof IndexRoute
+  CommunicationRoute: typeof CommunicationRoute
+  StatisticsRoute: typeof StatisticsRoute
+  TaskManagmentRoute: typeof TaskManagmentRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/task-managment": {
-      id: "/task-managment";
-      path: "/task-managment";
-      fullPath: "/task-managment";
-      preLoaderRoute: typeof TaskManagmentRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/statistics": {
-      id: "/statistics";
-      path: "/statistics";
-      fullPath: "/statistics";
-      preLoaderRoute: typeof StatisticsRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/communication": {
-      id: "/communication";
-      path: "/communication";
-      fullPath: "/communication";
-      preLoaderRoute: typeof CommunicationRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+    '/task-managment': {
+      id: '/task-managment'
+      path: '/task-managment'
+      fullPath: '/task-managment'
+      preLoaderRoute: typeof TaskManagmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/statistics': {
+      id: '/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof StatisticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/communication': {
+      id: '/communication'
+      path: '/communication'
+      fullPath: '/communication'
+      preLoaderRoute: typeof CommunicationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,7 +107,7 @@ const rootRouteChildren: RootRouteChildren = {
   CommunicationRoute: CommunicationRoute,
   StatisticsRoute: StatisticsRoute,
   TaskManagmentRoute: TaskManagmentRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()

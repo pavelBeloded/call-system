@@ -60,7 +60,7 @@ export function ChatPanel({ open, onOpenChange }: ChatPanelProps) {
               </>
             ) : connectionStatus === "connecting" ? (
               <>
-                <div className="h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                <span className="inline-block h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
                 <span className="text-blue-600">Connecting...</span>
               </>
             ) : (
