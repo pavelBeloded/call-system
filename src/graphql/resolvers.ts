@@ -1,4 +1,5 @@
-import { baseContacts, generateContactStatistics } from "../mocks/data/shared";
+import { generateContactStatistics } from "../mocks/data/shared";
+import { baseContacts } from "@/mocks/data/db";
 
 function getAvatarInitials(firstName: string, lastName: string): string {
   return `${firstName[0]}${lastName[0]}`.toUpperCase();
