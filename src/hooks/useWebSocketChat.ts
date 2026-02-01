@@ -1,5 +1,3 @@
-// src/hooks/useWebSocketChat.ts
-
 import { useEffect, useState, useRef, useCallback } from "react";
 
 export interface ChatMessage {
