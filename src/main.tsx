@@ -8,29 +8,59 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { apolloClient } from "./lib/apolloClient";
 import { ApolloProvider } from "@apollo/client/react";
 
+console.log("VITE_ENABLE_MOCKS =", import.meta.env.VITE_ENABLE_MOCKS);
+console.log("DEV =", import.meta.env.DEV);
+console.log("MODE =", import.meta.env.MODE);
+
+/**
+ * Чистим старые Service Worker (если они есть),
+ * чтобы они не ломали новый билд
+ */
+async function cleanupServiceWorkers() {
+  if (!("serviceWorker" in navigator)) return;
+
+  try {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    await Promise.all(registrations.map((reg) => reg.unregister()));
+    console.log("🧹 Old Service Workers cleaned");
+  } catch (e) {
+    console.warn("⚠️ Failed to cleanup Service Workers", e);
+  }
+}
+
+/**
+ * Запускаем MSW, но НИКОГДА не блокируем рендер
+ */
 async function enableMocking() {
-  const isMockingEnabled =
-    import.meta.env.DEV || import.meta.env.VITE_ENABLE_MOCKS === "true";
+  const isMockingEnabled = import.meta.env.VITE_ENABLE_MOCKS === "true";
 
   if (!isMockingEnabled) {
+    console.log("⏭️ Mocking disabled");
     return;
   }
 
-  const { worker } = await import("./mocks/browser");
+  try {
+    await cleanupServiceWorkers();
 
-  return worker.start({
-    onUnhandledRequest: "bypass",
-    serviceWorker: {
-      url: "/mockServiceWorker.js",
-    },
-  });
+    const { worker } = await import("./mocks/browser");
+
+    worker.start({
+      onUnhandledRequest: "bypass",
+      serviceWorker: {
+        url: "/mockServiceWorker.js",
+      },
+    });
+
+    console.log("✅ MSW starting...");
+  } catch (error) {
+    console.warn("⚠️ MSW failed, app continues without mocks", error);
+  }
 }
 
-const queryCient = new QueryClient({
+const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5,
-
       refetchOnWindowFocus: false,
     },
   },
@@ -43,20 +73,22 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
-enableMocking().then(() => {
-  const rootElement = document.getElementById("root")!;
-  if (!rootElement.innerHTML) {
-    const root = ReactDOM.createRoot(rootElement);
-    root.render(
-      <React.StrictMode>
-        <ErrorBoundary>
-          <ApolloProvider client={apolloClient}>
-            <QueryClientProvider client={queryCient}>
-              <RouterProvider router={router} />
-            </QueryClientProvider>
-          </ApolloProvider>
-        </ErrorBoundary>
-      </React.StrictMode>,
-    );
-  }
-});
+
+const rootElement = document.getElementById("root")!;
+const root = ReactDOM.createRoot(rootElement);
+
+// 👉 MSW стартует в фоне
+enableMocking();
+
+// 👉 Приложение рендерится ВСЕГДА
+root.render(
+  <React.StrictMode>
+    <ErrorBoundary>
+      <ApolloProvider client={apolloClient}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </ApolloProvider>
+    </ErrorBoundary>
+  </React.StrictMode>,
+);
